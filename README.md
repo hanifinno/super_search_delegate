@@ -24,11 +24,13 @@ Add the latest version to your `pubspec.yaml`:
 ```yaml
 dependencies:
   super_search_delegate: ^1.0.0
+```
 
+---
 
+## 💻 Usage
 
-💻 Usage
-
+```dart
 await SuperSearchDelegate.show<String>(
   context: context,
   config: SearchConfig<String>(
@@ -38,10 +40,13 @@ await SuperSearchDelegate.show<String>(
     onItemSelected: (item) => print('You selected: $item'),
   ),
 );
+```
 
+---
 
-🧩 Search with Custom Model
+## 🧩 Search with Custom Model
 
+```dart
 class Fruit {
   final String id;
   final String name;
@@ -67,8 +72,10 @@ await SuperSearchDelegate.show<Fruit>(
     onItemSelected: (item) => print('Selected: ${item.name}'),
   ),
 );
+``` 
+----
 
-⚙️ API Reference
+## ⚙️ API Reference
 
 | Property           | Type                       | Description                                                |
 | ------------------ | -------------------------- | ---------------------------------------------------------- |
@@ -80,5 +87,6 @@ await SuperSearchDelegate.show<Fruit>(
 | `noResultsWidget`  | `Widget?`                  | Widget shown when no results are found.                    |
 | `onItemSelected`   | `void Function(T)`         | Callback triggered when an item is tapped.                 |
 
+---
 
-🙌 Maintained and Powered by @hanifinno @hanifuddin.dev@gmail.com @hanifuddin15
+## 🙌 Maintained and Powered by @hanifinno @hanifuddin.dev@gmail.com @hanifuddin15

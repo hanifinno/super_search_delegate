@@ -1,7 +1,8 @@
 name: super_search_delegate
-description: "A new Flutter package project."
+description: "A highly flexible search delegate with customizable filtering and UI for Flutter applications"
 version: 0.0.1
-homepage:
+homepage: https://github.com/hanifinno/super_search_delegate
+repository: https://github.com/hanifinno/super_search_delegate.git
 
 environment:
   sdk: ^3.5.4

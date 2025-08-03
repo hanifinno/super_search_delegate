@@ -1,3 +1,9 @@
-## 0.0.1
+Changelog
+1.0.0 - August 03, 2025
 
-* TODO: Describe initial release.
+Initial release of the super_search_delegate package.
+Added SuperSearchDelegate class for flexible search functionality in Flutter.
+Included SearchConfig for configuring search behavior.
+Implemented SuperSearchResults and SuperSearchAppBar widgets for search UI.
+Added support for custom item builders, property selectors, and filters.
+Included unit tests for core functionality.

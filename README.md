@@ -89,4 +89,4 @@ await SuperSearchDelegate.show<Fruit>(
 
 ---
 
-## 🙌 Maintained and Powered by @hanifinno @hanifuddin.dev@gmail.com @hanifuddin15
+## 🙌 Maintained and Powered by  @hanifuddin.dev@gmail.com  @mirza.dev25@gmail.com

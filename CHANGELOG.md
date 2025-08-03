@@ -1,9 +1,12 @@
 ## Changelog
 
+## [1.0.2] - [August 03, 2025]
+
+* Contrinutor @mirza.dev25@gmail.com
+
 ## [1.0.1] - [August 03, 2025]
 
 * Update documentation
-
 
 ## [1.0.0] - [August 03, 2025]
 
@@ -16,3 +19,4 @@
 * Added documentation for classes, methods, and properties.
 * Added Example code 
 * Added Brief Readme file
+

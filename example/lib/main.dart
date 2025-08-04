@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:super_search_delegate/search_config.dart';
 import 'package:super_search_delegate/super_search_delegate.dart';
+import 'package:http/http.dart' as http;
 
 void main() {
   runApp(const MyApp());
@@ -20,30 +23,73 @@ class MyApp extends StatelessWidget {
   }
 }
 
-/// Simple key-value model class for search data.
-class KeyValueItem {
-  final String key;
-  final String value;
+/// Sample model class for search data.
+class PostModel {
+  int? userId;
+  int? id;
+  String? title;
+  String? body;
 
-  KeyValueItem({required this.key, required this.value});
+  PostModel({
+    this.userId,
+    this.id,
+    this.title,
+    this.body,
+  });
 
-  @override
-  String toString() => '$key: $value';
+  factory PostModel.fromJson(Map<String, dynamic> json) {
+    return PostModel(
+      userId: json['userId'],
+      id: json['id'],
+      title: json['title'],
+      body: json['body'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'userId': userId,
+      'id': id,
+      'title': title,
+      'body': body,
+    };
+  }
 }
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
-  // Sample data list
-  static final List<KeyValueItem> data = [
-    KeyValueItem(key: '001', value: 'Apple'),
-    KeyValueItem(key: '002', value: 'Banana'),
-    KeyValueItem(key: '003', value: 'Mango'),
-    KeyValueItem(key: '004', value: 'Grapes'),
-    KeyValueItem(key: '005', value: 'Orange'),
-    KeyValueItem(key: '006', value: 'Pineapple'),
-    KeyValueItem(key: '007', value: 'Watermelon'),
-  ];
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  List<PostModel> postList = [];
+
+  @override
+  void initState() {
+    fetchData();
+    super.initState();
+  }
+
+//Smaple Api Calling
+  Future<void> fetchData() async {
+    var url = Uri.https('jsonplaceholder.typicode.com', 'posts');
+    var response = await http.get(
+      url,
+      headers: {
+        'Authorization':
+            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZDVodGFwZDAwMHd1eHBkZnIzYXB2cjAiLCJyb2xlIjoiYWRtaW4iLCJjb21wYW55X2lkIjoiY21kNWh0YWZ4MDAwZnV4cGRlYnFmd2R2cSIsImlhdCI6MTc1MzMyODU3NCwiZXhwIjoxNzUzNTg3Nzc0fQ.gtH4U-ey8YvigHFTSigTaliMz65nu2jvj4-2vyzTwXQ',
+      },
+    );
+    if (response.statusCode == 200) {
+      postList = (jsonDecode(response.body) as List)
+          .map((item) => PostModel.fromJson(item))
+          .toList();
+    }
+    debugPrint('Response status: ${response.statusCode}');
+    debugPrint('Response body: ${response.body}');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,21 +101,22 @@ class HomePage extends StatelessWidget {
             icon: const Icon(Icons.search),
             onPressed: () async {
               // Show search delegate
-              final selected = await SuperSearchDelegate.show<KeyValueItem>(
+              final selected = await SuperSearchDelegate.show<PostModel>(
                 context: context,
-                config: SearchConfig<KeyValueItem>(
-                  items: data,
+                config: SearchConfig<PostModel>(
+                  items: postList,
                   itemBuilder: (context, item, query) {
                     return ListTile(
-                      title: Text(item.value),
-                      subtitle: Text('ID: ${item.key}'),
+                      title: Text(item.title ?? ''),
+                      subtitle: Text('ID: ${item.body}'),
                     );
                   },
                   // Fields to search on
-                  propertySelector: (item) => [item.key, item.value],
+                  propertySelector: (item) =>
+                      [item.id.toString(), item.title.toString()],
                   onItemSelected: (item) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('You selected: ${item.value}')),
+                      SnackBar(content: Text('You selected: ${item.userId}')),
                     );
                   },
                 ),
@@ -77,7 +124,7 @@ class HomePage extends StatelessWidget {
 
               if (selected != null) {
                 debugPrint(
-                    'Selected item: ${selected.value} (${selected.key})');
+                    'Selected item: ${selected.title} (${selected.userId})');
               }
             },
           ),

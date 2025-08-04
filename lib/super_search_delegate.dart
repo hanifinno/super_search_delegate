@@ -38,7 +38,7 @@ class SuperSearchDelegate<T> extends SearchDelegate<T?> {
   Widget buildSuggestions(BuildContext context) => _buildResults(context);
 
   Widget _buildResults(BuildContext context) {
-    final results = _filterItems();
+    final results = filterItems();
     return SuperSearchResults<T>(
       results: results,
       query: query,
@@ -51,7 +51,7 @@ class SuperSearchDelegate<T> extends SearchDelegate<T?> {
     );
   }
 
-  List<T> _filterItems() {
+  List<T> filterItems() {
     if (query.isEmpty) return [];
 
     final normalizedQuery = query.toLowerCase();

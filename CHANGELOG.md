@@ -1,5 +1,11 @@
 ## Changelog
 
+## [1.0.4] - [August 03, 2025]
+* Sample Api Data Fetching and Integration with UI
+
+## [1.0.3] - [August 03, 2025]
+* Filter Items modification
+
 ## [1.0.2] - [August 03, 2025]
 
 * Contrinutor @mirza.dev25@gmail.com

@@ -23,7 +23,7 @@ Add the latest version to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  super_search_delegate: ^1.0.0
+  super_search_delegate: ^1.0.5
 ```
 
 ---
@@ -89,4 +89,6 @@ await SuperSearchDelegate.show<Fruit>(
 
 ---
 
-## 🙌 Maintained and Powered by  @hanifuddin.dev@gmail.com  @mirza.dev25@gmail.com
+## 🙌 Maintained and Powered by 
+* 📧 **[hanifuddin.dev@gmail.com](mailto:hanifuddin.dev@gmail.com)**
+* 📧 **[mirza.dev25@gmail.com](mailto:mirza.dev25@gmail.com)**

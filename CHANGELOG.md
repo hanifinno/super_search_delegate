@@ -1,5 +1,8 @@
 ## Changelog
 
+## [1.0.5] - [August 03, 2025]
+* Sample Api Data Fetching and Integration with UI(with Dio/removed http)
+
 ## [1.0.4] - [August 03, 2025]
 * Sample Api Data Fetching and Integration with UI
 

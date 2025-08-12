@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:super_search_delegate/search_config.dart';
 import 'package:super_search_delegate/super_search_delegate.dart';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 
 void main() {
   runApp(const MyApp());
@@ -74,21 +74,31 @@ class _HomePageState extends State<HomePage> {
 
 //Smaple Api Calling
   Future<void> fetchData() async {
-    var url = Uri.https('jsonplaceholder.typicode.com', 'posts');
-    var response = await http.get(
-      url,
-      headers: {
-        'Authorization':
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZDVodGFwZDAwMHd1eHBkZnIzYXB2cjAiLCJyb2xlIjoiYWRtaW4iLCJjb21wYW55X2lkIjoiY21kNWh0YWZ4MDAwZnV4cGRlYnFmd2R2cSIsImlhdCI6MTc1MzMyODU3NCwiZXhwIjoxNzUzNTg3Nzc0fQ.gtH4U-ey8YvigHFTSigTaliMz65nu2jvj4-2vyzTwXQ',
-      },
-    );
-    if (response.statusCode == 200) {
-      postList = (jsonDecode(response.body) as List)
-          .map((item) => PostModel.fromJson(item))
-          .toList();
+    final dio = Dio();
+
+    try {
+      final response = await dio.get(
+        'https://jsonplaceholder.typicode.com/posts',
+        options: Options(
+          headers: {
+            'Authorization':
+                'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZDVodGFwZDAwMHd1eHBkZnIzYXB2cjAiLCJyb2xlIjoiYWRtaW4iLCJjb21wYW55X2lkIjoiY21kNWh0YWZ4MDAwZnV4cGRlYnFmd2R2cSIsImlhdCI6MTc1MzMyODU3NCwiZXhwIjoxNzUzNTg3Nzc0fQ.gtH4U-ey8YvigHFTSigTaliMz65nu2jvj4-2vyzTwXQ',
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        postList = (response.data as List)
+            .map((item) => PostModel.fromJson(item))
+            .toList();
+
+        debugPrint('Data fetched: ${postList.length} posts');
+      } else {
+        debugPrint('Error: ${response.statusCode}');
+      }
+    } catch (e) {
+      debugPrint('Fetch failed: $e');
     }
-    debugPrint('Response status: ${response.statusCode}');
-    debugPrint('Response body: ${response.body}');
   }
 
   @override

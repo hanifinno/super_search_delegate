@@ -1,5 +1,11 @@
 ## Changelog
 
+## [1.0.7] - [September 10, 2025]
+* Paginated Server Side Search modified
+
+## [1.0.6] - [September 10, 2025]
+* Paginated Server Side Search added
+
 ## [1.0.5] - [August 03, 2025]
 * Sample Api Data Fetching and Integration with UI(with Dio/removed http)
 

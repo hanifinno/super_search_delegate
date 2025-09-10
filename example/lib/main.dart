@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:super_search_delegate/search_config.dart';
 import 'package:super_search_delegate/super_search_delegate.dart';
@@ -72,19 +71,13 @@ class _HomePageState extends State<HomePage> {
     super.initState();
   }
 
-//Smaple Api Calling
+  /// Sample API (fetch all posts once, for local search demo)
   Future<void> fetchData() async {
     final dio = Dio();
 
     try {
       final response = await dio.get(
         'https://jsonplaceholder.typicode.com/posts',
-        options: Options(
-          headers: {
-            'Authorization':
-                'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZDVodGFwZDAwMHd1eHBkZnIzYXB2cjAiLCJyb2xlIjoiYWRtaW4iLCJjb21wYW55X2lkIjoiY21kNWh0YWZ4MDAwZnV4cGRlYnFmd2R2cSIsImlhdCI6MTc1MzMyODU3NCwiZXhwIjoxNzUzNTg3Nzc0fQ.gtH4U-ey8YvigHFTSigTaliMz65nu2jvj4-2vyzTwXQ',
-          },
-        ),
       );
 
       if (response.statusCode == 200) {
@@ -101,16 +94,43 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  /// 🔹 Example of server-side paginated search
+  Future<List<PostModel>> searchPostsFromServer(
+      String query, int page, int pageSize) async {
+    final dio = Dio();
+    try {
+      final response = await dio.get(
+        'https://jsonplaceholder.typicode.com/posts',
+        queryParameters: {
+          "_page": page,
+          "_limit": pageSize,
+          "q":
+              query, // (jsonplaceholder ignores this, but for real API it works)
+        },
+      );
+
+      if (response.statusCode == 200) {
+        return (response.data as List)
+            .map((e) => PostModel.fromJson(e))
+            .toList();
+      }
+    } catch (e) {
+      debugPrint("Server search error: $e");
+    }
+    return [];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Search Using Model'),
         actions: [
+          /// 🔹 Local Search (uses pre-fetched postList)
           IconButton(
             icon: const Icon(Icons.search),
+            tooltip: "Local Search",
             onPressed: () async {
-              // Show search delegate
               final selected = await SuperSearchDelegate.show<PostModel>(
                 context: context,
                 config: SearchConfig<PostModel>(
@@ -118,23 +138,52 @@ class _HomePageState extends State<HomePage> {
                   itemBuilder: (context, item, query) {
                     return ListTile(
                       title: Text(item.title ?? ''),
-                      subtitle: Text('ID: ${item.body}'),
+                      subtitle: Text('Body: ${item.body}'),
                     );
                   },
-                  // Fields to search on
                   propertySelector: (item) =>
                       [item.id.toString(), item.title.toString()],
                   onItemSelected: (item) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('You selected: ${item.userId}')),
+                      SnackBar(content: Text('Local: ${item.title}')),
                     );
                   },
                 ),
               );
 
               if (selected != null) {
-                debugPrint(
-                    'Selected item: ${selected.title} (${selected.userId})');
+                debugPrint('Selected (Local): ${selected.title}');
+              }
+            },
+          ),
+
+          /// 🔹 Server-side Paginated Search
+          IconButton(
+            icon: const Icon(Icons.cloud),
+            tooltip: "Server Search",
+            onPressed: () async {
+              final selected = await SuperSearchDelegate.show<PostModel>(
+                context: context,
+                config: SearchConfig<PostModel>(
+                  asyncSearch: searchPostsFromServer,
+                  pageSize: 10,
+                  itemBuilder: (context, item, query) {
+                    return ListTile(
+                      title: Text(item.title ?? ''),
+                      subtitle: Text("User ID: ${item.userId}"),
+                    );
+                  },
+                  onItemSelected: (item) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Server: ${item.title}')),
+                    );
+                  },
+                  items: [],
+                ),
+              );
+
+              if (selected != null) {
+                debugPrint('Selected (Server): ${selected.title}');
               }
             },
           ),
@@ -142,7 +191,8 @@ class _HomePageState extends State<HomePage> {
       ),
       body: const Center(
         child: Text(
-          'Tap the 🔍 icon to search by name or ID.',
+          'Tap 🔍 for Local Search\nTap ☁️ for Server Search (paginated)',
+          textAlign: TextAlign.center,
           style: TextStyle(fontSize: 16),
         ),
       ),

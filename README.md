@@ -23,7 +23,7 @@ Add the latest version to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  super_search_delegate: ^1.0.5
+  super_search_delegate: ^1.0.7
 ```
 
 ---

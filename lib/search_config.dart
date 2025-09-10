@@ -64,7 +64,16 @@ class SearchConfig<T> {
 
   /// Creates a [SearchConfig] instance for customizing a searchable list.
   ///
+
+  // 🔹 new for server-side
+  final Future<List<T>> Function(String query, int page, int pageSize)?
+      asyncSearch;
+
   /// Throws an [AssertionError] if both [propertySelector] and [customFilter]
+
+  /// Page Size
+  final int pageSize;
+
   /// are provided, as only one filtering strategy should be used at a time.
   SearchConfig({
     required this.items,
@@ -74,6 +83,8 @@ class SearchConfig<T> {
     this.searchFieldLabel = 'Search...',
     this.noResultsWidget,
     this.onItemSelected,
+    this.asyncSearch,
+    this.pageSize = 10,
   }) : assert(
           propertySelector == null || customFilter == null,
           'Cannot use both propertySelector and customFilter',

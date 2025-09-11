@@ -1,5 +1,26 @@
 ## Changelog
 
+## [2.0.0] - [September 11, 2025]
+* Paginated Server Side Search modified
+
+## [1.0.13] - [September 10, 2025]
+* Paginated Server Side Search modified
+
+## [1.0.12] - [September 10, 2025]
+* Paginated Server Side Search modified
+
+## [1.0.11] - [September 10, 2025]
+* Paginated Server Side Search modified
+
+## [1.0.10] - [September 10, 2025]
+* Paginated Server Side Search modified
+
+## [1.0.9] - [September 10, 2025]
+* Paginated Server Side Search modified
+
+## [1.0.8] - [September 10, 2025]
+* Paginated Server Side Search modified
+
 ## [1.0.7] - [September 10, 2025]
 * Paginated Server Side Search modified
 
